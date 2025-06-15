@@ -1,0 +1,356 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.bg-opacity-75 {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+}
+
+
+/* Navbar */
+.navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff6600; /* Orange */
+}
+
+.navbar-nav .nav-link {
+    color: #555;
+}
+
+.navbar-nav .nav-link.active {
+    color: #ff6600; /* Orange */
+    font-weight: bold;
+}
+/*Bottom Nav bar*/
+.bottom-nav{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #f8f9fa;
+    border-top: 1px solid #ff6600;
+    display: flex;
+    justify-content: space-around;
+    align-items:center;
+    z-index: 1000;
+}
+.bottom-nav .nav-item{
+    flex: 1;
+    text-align: center;
+    color: #666;
+    text-decoration:none;
+    padding: 5px 0;
+    transition: background 0.2s;
+}
+.bottom-nav .nav-item:hover{
+    background: #f0f0f0;
+}
+.bottom-nav .nav-item.active,
+.bottom-nav .nav-item.active i,
+.bottom-nav .nav-item.active span{
+    color: #ff6600
+}
+.bottom-nav .nav-item i {
+    font-size: 1.4rem;
+    display: block;
+    margin-bottom: 2px;
+}
+.bottom-nav .nav-item span{
+    font-size: 0.75rem;
+    display: block;
+    line-height: 1;
+}
+/* Category Slider */
+.category-slider {
+    border-bottom: 2px solid #ff6600;
+    padding-bottom: 10px;
+}
+
+.category-btn {
+    border: 1px solid #ff6600;
+    color: #ff6600;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.category-btn:hover {
+    background-color: #ff6600;
+    color: #fff;
+}
+
+.category-btn.active {
+    background-color: #ff6600;
+    color: #fff;
+}
+/* General Section Styling */
+.card {
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.icon {
+    font-size: 3rem;
+    color: #ff6600; /* Orange */
+}
+
+.text-orange {
+    color: #ff6600; /* Orange */
+}
+
+.text-primary {
+    color: #007bff; /* Blue */
+}
+
+.bg-light {
+    background-color: #f8f9fa !important;
+}
+/* Buttons */
+.btn {
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.btn-primary {
+    background-color: #ff6600; /* Orange */
+    border-color: #ff6600; /* Orange */
+}
+
+.btn-primary:hover {
+    background-color: #e65c00; /* Darker Orange */
+    border-color: #e65c00; /* Darker Orange */
+}
+
+.btn-outline-primary {
+    border-color: #ff6600; /* Orange */
+    color: #ff6600; /* Orange */
+}
+
+.btn-outline-primary:hover {
+    background-color: #ff6600; /* Orange */
+    color: #ffffff;
+}
+
+/* Tables */
+.table {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #ff6600; /* Orange */
+    color: #ffffff;
+    text-align: center;
+}
+
+.table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Forms */
+.form-control {
+    border-radius: 20px;
+    border: 1px solid #ff6600; /* Orange */
+}
+
+.form-select {
+    border-radius: 20px;
+    border: 1px solid #ff6600; /* Orange */
+}
+
+/* Alerts */
+.alert {
+    border-radius: 10px;
+    padding: 20px;
+    font-size: 0.9rem;
+    background-color: #ff6600; /* Orange */
+    color: #ffffff;
+}
+
+/* Product Cards */
+.product-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #ffffff;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+    height: 150px;
+    object-fit: cover;
+}
+
+.product-card .card-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #ff6600; /* Orange */
+}
+
+.product-card .card-text {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Chat Window */
+.chat-window {
+    max-height: 65vh;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+}
+
+.msg-me {
+    text-align: right;
+    color: #ff6600; /* Orange */
+}
+
+.msg-you {
+    text-align: left;
+    color: #333;
+}
+
+/* Partner List */
+.partner-list {
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+
+.partner-list .list-group-item {
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.partner-list .list-group-item:hover {
+    background-color: #ff6600; /* Orange */
+    color: #ffffff;
+}
+
+.partner-list .list-group-item.active {
+    background-color: #ff6600; /* Orange */
+    color: #ffffff;
+}
+
+/* Cart */
+.cart-item img {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.cart-total {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ff6600; /* Orange */
+}
+
+/* Checkout */
+.checkout-summary {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+.checkout-summary h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff6600; /* Orange */
+}
+
+.checkout-summary .total {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ff6600; /* Orange */
+}
+
+/* Register & Login Forms */
+.register-form,
+.login-form {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.register-form h2,
+.login-form h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff6600; /* Orange */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.register-form .form-control,
+.login-form .form-control {
+    border-radius: 20px;
+    border: 1px solid #ff6600; /* Orange */
+}
+
+.register-form .btn,
+.login-form .btn {
+    border-radius: 20px;
+    background-color: #ff6600; /* Orange */
+    color: #ffffff;
+}
+
+.register-form .btn:hover,
+.login-form .btn:hover {
+    background-color: #e65c00; /* Darker Orange */
+}
+
+/* Seller Dashboard */
+.seller-dashboard h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ff6600; /* Orange */
+}
+
+.seller-dashboard .btn-primary {
+    background-color: #ff6600; /* Orange */
+    border-color: #ff6600; /* Orange */
+}
+
+.seller-dashboard .btn-primary:hover {
+    background-color: #e65c00; /* Darker Orange */
+    border-color: #e65c00; /* Darker Orange */
+}
