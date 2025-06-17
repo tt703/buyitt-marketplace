@@ -1,6 +1,5 @@
 # Use official PHP + Apache image
 FROM php:8.2-apache
-
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     libzip-dev unzip git curl \
