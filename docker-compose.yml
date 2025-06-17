@@ -1,11 +1,11 @@
+
 services:
-  web:
+  wweb:
     build:
       context: .
       dockerfile: .devcontainer/Dockerfile
     volumes:
-      - ./src:/var/www/html
-    
+      - ./src/public:/var/www/html
     ports:
       - "8080:80"
     depends_on:
@@ -36,17 +36,6 @@ services:
       PMA_PASSWORD: secret
     ports:
       - "8081:80"
- 
-  php:
-    image: php:8.1-apache
-    container_name: buyitt-marketplace-php
-    restart: always
-    volumes:
-      - ./php:/var/www/html
-    ports:
-      - "8082:80"
-    depends_on:
-      - db
 
 volumes:
   db_data:

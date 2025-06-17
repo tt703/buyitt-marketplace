@@ -68,50 +68,66 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(err => console.error('Error fetching products:', err));
   };
 
-  // Attach quick view and cart logic to product cards
-  const attachProductCardListeners = () => {
-    document.querySelectorAll('.product-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const pid = card.dataset.productId;
-        fetch(`get_product_detail.php?id=${pid}`)
-          .then(res => res.json())
-          .then(data => {
-            const p = data.product;
-            document.getElementById('qv-title').textContent = p.name;
-            document.getElementById('qv-image').src = p.image_url;
-            document.getElementById('qv-price').textContent = p.amount;
-            document.getElementById('qv-category').textContent = p.category_name;
-            document.getElementById('qv-desc').textContent = p.description;
-            document.getElementById('qv-seller').textContent = p.seller_name;
-            document.getElementById('qv-chat-link').href = `chats.php?with_user=${p.seller_id}&product_id=${p.id}&message=${encodeURIComponent('Is this product still available?')}`;
+// Attach quick view and cart logic to product cards
+const attachProductCardListeners = (container = document) => {
+  container.querySelectorAll('.product-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const pid = card.dataset.productId;
+      fetch(`get_product_detail.php?id=${pid}`)
+        .then(res => res.json())
+        .then(data => {
+          const p = data.product;
 
-            document.getElementById('qv-add-cart').onclick = () => {
-              window.location = `add_to_cart.php?id=${p.id}`;
-            };
+          // Update the main product details
+          document.getElementById('qv-title').textContent = p.name;
+          document.getElementById('qv-image').src = p.image_url;
+          document.getElementById('qv-price').textContent = p.amount;
+          document.getElementById('qv-category').textContent = p.category_name;
+          document.getElementById('qv-desc').textContent = p.description;
+          document.getElementById('qv-seller').textContent = p.seller_name;
+          document.getElementById('qv-chat-link').href = `chats.php?with_user=${p.seller_id}&product_id=${p.id}&message=${encodeURIComponent('Is this product still available?')}`;
 
-            const simDiv = document.getElementById('qv-similar');
-            simDiv.innerHTML = '';
-            data.similar.forEach(s => {
-              const col = document.createElement('div');
-              col.className = 'col-6 col-md-3 mb-3';
-              col.innerHTML = `
-                <div class="card h-100 product-card" data-product-id="${s.id}">
-                  <img src="${s.image_url}" class="card-img-top" alt="">
-                  <div class="card-body p-2">
-                    <h6 class="card-title mb-1">${s.name}</h6>
-                    <p class="mb-0">${s.price}</p>
-                  </div>
-                </div>`;
-              simDiv.appendChild(col);
-            });
+          // Update the "Add to Cart" button functionality
+          document.getElementById('qv-add-cart').onclick = () => {
+            window.location = `add_to_cart.php?id=${p.id}`;
+          };
 
-            const modal = new bootstrap.Modal(document.getElementById('quickViewModal'));
-            modal.show();
+          // Update the similar products section
+          const simDiv = document.getElementById('qv-similar');
+          simDiv.innerHTML = '';
+          data.similar.forEach(s => {
+            const col = document.createElement('div');
+            col.className = 'col-6 col-md-3 mb-3';
+            col.innerHTML = `
+              <div class="card h-100 product-card" data-product-id="${s.id}">
+                <img src="${s.image_url}" class="card-img-top" alt="">
+                <div class="card-body p-2">
+                  <h6 class="card-title mb-1">${s.name}</h6>
+                  <p class="mb-0">${s.price}</p>
+                </div>
+              </div>`;
+            simDiv.appendChild(col);
           });
-      });
-    });
-  };
 
+          // Reattach event listeners to the newly added similar product cards
+          attachProductCardListeners(simDiv);
+
+          // Show the modal
+          const modal = new bootstrap.Modal(document.getElementById('quickViewModal'));
+          modal.show();
+        })
+        .catch(err => {
+          console.error('Error fetching product details:', err);
+        });
+    });
+  });
+};
+
+// Initial call to attach listeners to product cards
+attachProductCardListeners();
+
+// Initial call to attach listeners to product cards
+attachProductCardListeners();
   // Category card redirection to category slider
   document.querySelectorAll('.category-card').forEach(card => {
     card.addEventListener('click', () => {

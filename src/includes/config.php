@@ -1,24 +1,14 @@
 <?php
 
+// Database configuration for BuyItt Marketplace
 
-// Parse the Railway-provided MySQL URL
-$db_url = getenv('MYSQL_URL');
-if ($db_url) {
-    $db_parts = parse_url($db_url);
-
-    $db_host = $db_parts['host'];
-    $db_name = ltrim($db_parts['path'], '/');
-    $db_user = $db_parts['user'];
-    $db_pass = $db_parts['pass'];
-} else {
-    // Fallback for local development
-    $db_host = 'localhost';
-    $db_name = 'buyitt';
-    $db_user = 'root';
-    $db_pass = '';
-}
+$db_host = getenv('DB_HOST') ?: 'db';
+$db_name = getenv('DB_NAME') ?: 'buyitt';
+$db_user = getenv('DB_USER') ?: 'buyitt_user';
+$db_pass = getenv('DB_PASS') ?: 'secret';
 
 $dsn = "mysql:host=$db_host;dbname=$db_name;charset=utf8mb4";
+
 
 try {
     $db = new PDO($dsn, $db_user, $db_pass, [

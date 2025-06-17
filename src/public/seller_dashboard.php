@@ -1,4 +1,5 @@
 <?php
+
 include '../includes/navbar.php';
 require_once '../includes/auth.php';
 require_once '../includes/config.php';
@@ -23,7 +24,7 @@ if (isset($_GET['delete_product'])) {
 
 // Fetch seller products
 $stmt = $db->prepare(
-    query: "SELECT p.id AS product_id ,p.name, p.amount, c.name AS category_name, p.image_path, p.created_at 
+    "SELECT p.id AS product_id, p.name, p.amount, c.name AS category_name, p.image_path, p.created_at 
      FROM products p
      JOIN categories c ON p.category = c.id
      WHERE p.user_id = ?
@@ -34,13 +35,20 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Fetch seller orders (orders containing seller's products)
 $stmt = $db->prepare(
-    "SELECT o.id, u.name AS buyer_name, o.total_amount, o.status, o.created_at
+    "SELECT 
+        o.id, 
+        u.name AS buyer_name, 
+        u.user_id AS buyer_id, 
+        o.total_amount, 
+        o.status, 
+        o.created_at, 
+        p.id AS product_id
      FROM orders o
      JOIN order_items oi ON o.id = oi.order_id
      JOIN products p ON oi.product_id = p.id
      JOIN users u ON o.buyer_id = u.user_id
      WHERE p.user_id = ?
-     GROUP BY o.id
+     GROUP BY o.id, u.name, u.user_id, o.total_amount, o.status, o.created_at, p.id
      ORDER BY o.created_at DESC"
 );
 $stmt->execute([$sellerId]);
@@ -56,7 +64,6 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/css/public.css?v=1.0"  rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
 
   <style>
     body { background: #f4f6f9; }
@@ -108,16 +115,43 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <?php else: ?>
         <table class="table">
           <thead>
-            <tr><th>Order ID</th><th>Buyer</th><th>Total</th><th>Status</th><th>Created At</th></tr>
+            <tr>
+              <th>Order ID</th>
+              <th>Buyer</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Created At</th>
+              <th>Actions</th>
+            </tr>
           </thead>
           <tbody>
             <?php foreach ($orders as $o): ?>
             <tr>
               <td><?= htmlspecialchars($o['id']) ?></td>
               <td><?= htmlspecialchars($o['buyer_name']) ?></td>
-              <td>R<?= number_format($o['total_amount'],2) ?></td>
+              <td>R<?= number_format($o['total_amount'], 2) ?></td>
               <td><?= htmlspecialchars($o['status']) ?></td>
               <td><?= htmlspecialchars($o['created_at']) ?></td>
+              <td>
+                <?php if (isset($o['status']) && $o['status'] !== 'Delivered'): ?>
+                  <form method="POST" action="chats.php" style="display:inline;">
+                    <input type="hidden" name="to_user" value="<?= htmlspecialchars($o['buyer_id'] ?? '') ?>">
+                    <input type="hidden" name="product_id" value="<?= htmlspecialchars($o['product_id'] ?? 0) ?>">
+                    <input type="hidden" name="message" value="Hi <?= htmlspecialchars($o['buyer_name'] ?? '') ?>, please let us know your preferred delivery option.
+                     1.Meet the seller at their location
+                     2.Seller come to your location
+                     3. Courier delivery to your address">
+                    <button type="submit" class="btn btn-sm btn-primary">Message Buyer</button>
+                  </form>
+                  <form method="POST" action="close_order.php" style="display:inline;">
+                    <input type="hidden" name="order_id" value="<?= htmlspecialchars($o['id'] ?? '') ?>">
+                    <input type="hidden" name="buyer_id" value="<?= htmlspecialchars($o['buyer_id'] ?? '') ?>">
+                    <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Mark this order as delivered?')">Close Order</button>
+                  </form>
+                <?php else: ?>
+                  <span class="badge bg-success">Delivered</span>
+                <?php endif; ?>
+              </td>
             </tr>
             <?php endforeach; ?>
           </tbody>
@@ -126,10 +160,10 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
   </div>
 
-<!--bottom bav -->
-<?php include __DIR__ .  "/../includes/nav.php"; ?>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.js"></script>
-<script src="../assets/js/public.js?v=1.0"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bottom navigation -->
+  <?php include __DIR__ . "/../includes/nav.php"; ?>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.js"></script>
+  <script src="../assets/js/public.js?v=1.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

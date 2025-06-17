@@ -1,6 +1,4 @@
 <?php
-// filepath: c:\Users\tman1\OneDrive\Documents\buyitt-marketplace\src\public\cart.php
-
 include "../includes/navbar.php";
 require __DIR__ . '/../includes/config.php';
 require __DIR__ . '/../includes/auth.php';
@@ -32,8 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $db->prepare("DELETE FROM cart_items WHERE id = ? AND user_id = ?");
             $stmt->execute([$removeId, $userId]);
         }
-
-        
     } catch (PDOException $e) {
         error_log("Database error: " . $e->getMessage());
         die("An error occurred while updating your cart. Please try again later.");
@@ -60,21 +56,22 @@ if ($userId) {
     }
     $guestCart = $_SESSION['guest_cart'];
 
-    foreach ($guestCart as $productId) {
+    foreach ($guestCart as $productId => $quantity) {
         $stmt = $db->prepare("SELECT id AS product_id, name, amount, image_path FROM products WHERE id = ?");
         $stmt->execute([$productId]);
         $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($product) {
             $items[] = array_merge($product, [
-                'cart_id' => $productId // Fake ID for guest session
+                'cart_id' => $productId, // Fake ID for guest session
+                'quantity' => $quantity
             ]);
         }
     }
 }
 
 // Calculate total
-$total = array_reduce($items, fn($sum, $i) => $sum + ((float)($i['amount'] ?? 0)), 0);
+$total = array_reduce($items, fn($sum, $i) => $sum + ((float)($i['amount'] ?? 0) * ($i['quantity'] ?? 1)), 0);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,10 +79,8 @@ $total = array_reduce($items, fn($sum, $i) => $sum + ((float)($i['amount'] ?? 0)
     <meta charset="UTF-8">
     <title>Your Cart - BuyItt</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../assets/css/public.css?v=1.0"  rel="stylesheet">
+    <link href="../assets/css/public.css?v=1.0" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
-
 </head>
 <body class="p-4">
     <div class="container">
@@ -99,6 +94,7 @@ $total = array_reduce($items, fn($sum, $i) => $sum + ((float)($i['amount'] ?? 0)
                         <tr>
                             <th>Item</th>
                             <th>Price</th>
+                            <th>Quantity</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -111,6 +107,7 @@ $total = array_reduce($items, fn($sum, $i) => $sum + ((float)($i['amount'] ?? 0)
                                     <?= htmlspecialchars($i['name'] ?? '') ?>
                                 </td>
                                 <td>R<?= number_format((float)($i['amount'] ?? 0), 2) ?></td>
+                                <td><?= htmlspecialchars($i['quantity'] ?? 1) ?></td>
                                 <td>
                                     <?php if ($userId): ?>
                                         <button name="remove" value="<?= (int)$i['cart_id'] ?>"
@@ -124,9 +121,8 @@ $total = array_reduce($items, fn($sum, $i) => $sum + ((float)($i['amount'] ?? 0)
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th class="text-end">Total:</th>
-                            <th>R<?= number_format((float)$total, 2) ?></th>
-                            <th></th>
+                            <th class="text-end" colspan="2">Total:</th>
+                            <th colspan="2">R<?= number_format((float)$total, 2) ?></th>
                         </tr>
                     </tfoot>
                 </table>
@@ -139,8 +135,8 @@ $total = array_reduce($items, fn($sum, $i) => $sum + ((float)($i['amount'] ?? 0)
             </form>
         <?php endif; ?>
     </div>
-    <!--bottom bav -->
-    <?php include __DIR__ .  "/../includes/nav.php"; ?>
+    <!-- Bottom Navigation -->
+    <?php include __DIR__ . '/../includes/nav.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.js"></script>
     <script src="../assets/js/public.js?v=1.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

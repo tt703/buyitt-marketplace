@@ -26,9 +26,12 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/css/public.css?v=1.0"  rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
+  <style>
+        #searchInput {
+            text-align: center; /* Center the text inside the input field */
+        }
+    </style>
 </head>
-
   <!-- Secondary Bar -->
   <div class="container mt-2">
     <div class="d-grid" style="grid-template-columns: 1fr 2fr 1fr; align-items: center;">
@@ -36,7 +39,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <h2 class="mb-0">BuyItt</h2>
       </div>
       <div>
-        <input type="text" id="searchInput" class="form-control" placeholder="Search products...">
+        <input type="text" id="searchInput" class="form-control" placeholder="Use the categories below to filter products" text-center>
       </div>
       <div class="text-end">
         <a href="cart.php" class="btn btn-outline-primary">Cart</a>
@@ -198,12 +201,11 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <li><i class="bi bi-check-circle-fill text-orange"></i> Manage your inventory effortlessly</li>
           <li><i class="bi bi-check-circle-fill text-orange"></i> Receive secure payments through Yoco</li>
       </li>
-        <a href="/public/seller_register.php" class="btn btn-primary mt-3">Become a Seller</a>
+        <a href="/public/register.php" class="btn btn-primary mt-3">Become a Seller</a>
       </div>
     </div>
   </div>
 </div>
-
 <!-- Flexible Delivery Options Section -->
 <div class="container mt-5">
   <div class="card shadow-sm border-0 p-4">
@@ -217,16 +219,49 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <i class="bi bi-truck text-orange fs-1"></i>
         <h4 class="fw-bold mt-3">Flexible Delivery Options</h4>
         <p>Choose from our approved delivery providers or meet the seller directly for a convenient shopping experience.</p>
-        <li class="list-unstyled">
+        <ul class="list-unstyled">
           <li><i class="bi bi-check-circle-fill text-orange"></i> Trusted courier services like <strong>Courier Guy</strong></li>
           <li><i class="bi bi-check-circle-fill text-orange"></i> Meet the seller at their location</li>
           <li><i class="bi bi-check-circle-fill text-orange"></i> Seller-to-door delivery for convenience</li>
-      </li>
-        <a href="/public/delivery_options.php" class="btn btn-primary mt-3">Learn More</a>
+        </ul>
+        <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#deliveryOptionsModal">
+          Learn More
+        </button>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Modal for Delivery Options -->
+<div class="modal fade" id="deliveryOptionsModal" tabindex="-1" aria-labelledby="deliveryOptionsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deliveryOptionsModalLabel">Delivery Options</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Once you place your order, the seller will send you a chat message to confirm your preferred delivery option. Here are the available options:</p>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <i class="bi bi-geo-alt-fill text-orange"></i> Meet the seller at their location
+          </li>
+          <li class="list-group-item">
+            <i class="bi bi-house-door-fill text-orange"></i> Seller-to-door delivery
+          </li>
+          <li class="list-group-item">
+            <i class="bi bi-truck text-orange"></i> Trusted courier services like <strong>Courier Guy</strong> or <strong>Pep</strong>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary mb-3" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- Footer -->
 <footer class="buyitt-footer mt-5">
   <div class="container py-4">
@@ -239,9 +274,9 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <h6>Quick Links</h6>
         <ul class="list-unstyled">
           <li><a href="index.php">Home</a></li>
-          <li><a href="categories.php">Categories</a></li>
+          <li><a href="index.php">Categories</a></li>
           <li><a href="cart.php">Cart</a></li>
-          <li><a href="contact.php">Contact Us</a></li>
+          <li><a href="chats.php">Contact Us</a></li>
         </ul>
       </div>
       <div class="col-md-4 mb-3">
