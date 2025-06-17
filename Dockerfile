@@ -23,8 +23,18 @@ WORKDIR /var/www/html
 COPY ./src /var/www/html/
 
 
+
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 
 # Expose port
 EXPOSE 80
+# Enable Apache rewrite and set permissions properly
+RUN a2enmod rewrite
+
+# Add this Apache config snippet to allow overrides and permissions
+RUN echo '<Directory /var/www/html>' >> /etc/apache2/sites-available/000-default.conf \
+ && echo '    Options Indexes FollowSymLinks' >> /etc/apache2/sites-available/000-default.conf \
+ && echo '    AllowOverride All' >> /etc/apache2/sites-available/000-default.conf \
+ && echo '    Require all granted' >> /etc/apache2/sites-available/000-default.conf \
+ && echo '</Directory>' >> /etc/apache2/sites-available/000-default.conf
