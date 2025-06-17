@@ -1,17 +1,18 @@
 
 services:
-  wweb:
+  web:
     build:
       context: .
       dockerfile: .devcontainer/Dockerfile
     volumes:
-      - ./src/public:/var/www/html
+      - ./src:/var/www/html
     ports:
       - "8080:80"
     depends_on:
       - db
     environment:
       PHP_INI_ERROR_DISPLAY: '1'
+    restart: always
 
   db:
     image: mysql:8.0
@@ -36,6 +37,7 @@ services:
       PMA_PASSWORD: secret
     ports:
       - "8081:80"
+    restart: always
 
 volumes:
   db_data:
