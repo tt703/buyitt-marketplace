@@ -20,7 +20,8 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 WORKDIR /var/www/html
 
 # Copy app code into container
-COPY ./src/public/ /var/www/html/
+COPY ./src /var/www/html/
+
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html

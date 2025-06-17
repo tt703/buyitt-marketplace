@@ -1,5 +1,9 @@
 <?php
 
+include "../includes/navbar.php";
+// Include the database connection and authentication
+require __DIR__ . "/../includes/config.php";
+require __DIR__ . "/../includes/auth.php";
 
 // Fetch category and limit from query parameters
 $cat = $_GET['cat'] ?? null;
