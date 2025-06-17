@@ -17,7 +17,7 @@ RUN a2enmod rewrite
 WORKDIR /var/www/html
 
 # Copy public files directly into Apache web root
-COPY ./src/public/ /var/www/html/
+COPY ./public/ /var/www/html/
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
