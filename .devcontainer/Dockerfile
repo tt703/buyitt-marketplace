@@ -13,11 +13,14 @@ RUN docker-php-ext-install zip pdo pdo_mysql gd mbstring xml
 # Enable Apache rewrite module
 RUN a2enmod rewrite
 
+# Set ServerName to avoid warning
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy public files directly into Apache web root
-COPY ./public/ /var/www/html/
+# Copy app code into container
+COPY ./src/public/ /var/www/html/
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
