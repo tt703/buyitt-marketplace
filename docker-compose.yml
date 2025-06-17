@@ -11,6 +11,14 @@ services:
     depends_on:
       - db
     environment:
+      APP_ENV: local
+      APP_DEBUG: '1'
+      environment:
+      DB_HOST: switchyard.proxy.rlwy.net
+      DB_PORT: 54044
+      DB_USER: root
+      DB_PASS: UcewAgrWmZinRKGAynmdaLeUVxYGSCsJ
+      DB_NAME: railway
       PHP_INI_ERROR_DISPLAY: '1'
     restart: always
 
